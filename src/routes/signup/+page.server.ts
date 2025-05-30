@@ -15,9 +15,13 @@ export const actions: Actions = {
     const formData = await request.formData()
     const username = formData.get("username") as string
     const password = formData.get("password") as string
+    const confirmPassword = formData.get("confirmPassword") as string
     
     if(!username || !password) {
       return fail(400, { message: "Need to input password or username" })
+    }
+    if(password !== confirmPassword) {
+      return fail(400, { message: "Passwords do not match"})
     }
     const privateKey = env.JWT_SECRET
     if(!privateKey) {
@@ -57,7 +61,7 @@ export const actions: Actions = {
         secure: process.env.NODE_ENV === 'production'
       })
 
-      redirect(301, '/')
+      return ({ message: "Successfully created an account"})
       
     } catch(err) {
       if(err instanceof Error) {

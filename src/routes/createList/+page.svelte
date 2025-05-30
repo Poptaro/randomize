@@ -9,8 +9,7 @@
 </script>
 
 
-<div class="flex flex-col gap-4 items-center justify-center w-[600px] border-2">
-   <img on:click={() => goto('/')} src={strawberry} alt="strawberry logo" class="h-[54px] w-[44px]"/>
+<div class="flex flex-col gap-4 items-center justify-center w-[600px]">
     <div class="flex items-center justify-center gap-2 w-full border-b-3 p-2">
       <input 
         class=" w-full mt-1 outline-none"
@@ -29,11 +28,11 @@
       </div>
     </div>
 </div>
-<div class="flex flex-row-reverse">
+<div class="flex flex-row-reverse gap-2">
   <Button buttonFunction={null} variable={null}>
     Create
   </Button>
-  <Button buttonFunction={() => goto('/')} variable="bg-white border-black">
+  <Button buttonFunction={() => goto('/')} variable="bg-white border-black border-2">
     Cancel
   </Button>
 </div>

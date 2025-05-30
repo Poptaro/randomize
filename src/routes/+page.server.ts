@@ -2,13 +2,15 @@ import jwt from 'jsonwebtoken'
 import { env } from '$env/dynamic/private'
 import { db } from "$lib/server/db/index"
 import { list } from "$lib/server/db/schema"
+import { redirect } from '@sveltejs/kit'
 import { eq } from 'drizzle-orm'
 
 export const load = async ({ cookies }) => {
   const token = cookies.get('token')
 
   if(!token) {
-    return { user: null}
+    throw redirect(302, "/login")
+    // return { user: null}
   }
   try {
     const user = jwt.verify(token, env.JWT_SECRET) as { id: number, username: string }

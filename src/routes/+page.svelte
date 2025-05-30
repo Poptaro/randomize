@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Search, Plus } from "@lucide/svelte";
+  import { Search, Plus, CircleUser } from "@lucide/svelte";
   import strawberry from "$lib/assets/img/strawberry.png"
   import Button from "$lib/components/Button.svelte"
   import { goto, invalidateAll } from "$app/navigation";
@@ -16,6 +16,9 @@
   }
 
   // const lists=[]
+
+  //profile selection modal
+  let modal = false
 
   async function logout() {
     try {
@@ -35,8 +38,32 @@
 
 <div class="flex flex-col gap-4 items-center justify-center w-[600px]">
   {#if data.user}
-  <!-- <p>{data.user?.id}. {data.user?.username}</p> -->
-   <img src={strawberry} alt="strawberry logo" class="h-[54px] w-[44px]"/>
+    <div class="flex justify-between items-center w-full pb-[40px]">
+
+      <button onclick={() => goto('/')} class="flex justify-between items-center hover:cursor-pointer">
+        <img src={strawberry} alt="strawberry logo" class="h-[36px] w-[29px]"/>
+        <p class="text-2xl pt-3">Randomize</p>
+      </button>
+
+      <div class="relative">
+        <button onclick={() => {modal = !modal}} class="hover:cursor-pointer">
+          <CircleUser size=32/>
+        </button>
+        {#if modal}
+          <div class="absolute right-0 flex flex-col items-center justify-center p-2 bg-white text-[14px] border-2 rounded-md w-[98px] h-[62px]">
+            <button disabled class="text-gray-400 pt-1">
+              My Profile
+            </button>
+            <button onclick={() => logout()} class="text-red-400 pt-1 cursor-pointer">
+              Sign out
+            </button>
+          </div>
+        {:else}
+          {null}
+        {/if}
+      </div>
+
+    </div>
     <div class="flex justify-between w-full">
         <div>
           
@@ -54,6 +81,7 @@
       />
     </div>
     {#if data.lists}
+    
       {#each data.lists as list: { id: number, name: string, description: string }}
         <div class="border-2 w-full">
           <div>z
@@ -73,10 +101,10 @@
   {:else}
       No User. Log in to create a list
   {/if}
-  <div class="">
+  <!-- <div class="">
     <a href='/signup' class="border-2">SIGNUP</a>
     <a href='/login' class="border-2">LOGIN</a>
     <button onclick={() => logout()}>LOGOUT</button>
 
-  </div>
+  </div> -->
 </div>

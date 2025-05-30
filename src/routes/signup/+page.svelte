@@ -1,25 +1,53 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { goto } from '$app/navigation';
+  import Button from '$lib/components/Button.svelte';
   export let form
+
+  let error = null
+
+
 </script>
 
-<div>
+<div class="flex flex-col w-[600px]">
+  <div class="pb-8">
+    Register for your account
+  </div>
   <form method="POST" use:enhance={() => {
-    return async ({ update }) => {
+    error = null
+
+    return async ({ result, update }) => {
       await update()
-      goto('/')
+      if(result.type === "success") {
+        goto('/')
+      } else {
+        // @ts-ignore
+        result.data.message ? error = result.data.message : error = null
+      }
     }
-  }}>
-    <label class="border-2">
-      Username
-      <input name='username' class="border-2">
-    </label>
-    <label class="border-2">
-      Password
-      <input name='password' class="border-2">
-    </label>
-    <button>Submit </button>
+  }} class="flex flex-col">
+  <div class="flex flex-col gap-8 pb-8">
+    <input 
+      name='username' 
+      class="outline-none w-full border-b-2 px-2" 
+      placeholder="Username" 
+      required>
+    <input 
+      name='password' 
+      class="outline-none w-full border-b-2 px-2" 
+      placeholder="Password"
+      required>
+    <input 
+      name='confirmPassword' 
+      class="outline-none w-full border-b-2 px-2" 
+      placeholder="Confirm Password"
+      required>
+
+  </div>
+  <button>
+    <a href="/login" class="text-blue-300">Already have an account? Sign in.</a>
+  </button>
+  <Button buttonFunction={null} variable={"w-[400px]"}>Sign Up</Button>
   </form>
 </div>
 <div class="text-red-400">

@@ -1,7 +1,7 @@
 import { serialize } from 'cookie'
 
 export async function POST() {
-  return new Response(JSON.stringify({ message: "Logged out and removed cookie from browser "}), {
+  return new Response(JSON.stringify({ message: "You have successfully signed out"}), {
     status: 200,
     headers: {
       'Set-cookie': serialize('token', '', {

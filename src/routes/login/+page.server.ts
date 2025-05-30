@@ -5,9 +5,7 @@ import { eq, and } from "drizzle-orm";
 import argon2 from "argon2"
 import jwt from "jsonwebtoken"
 import { env } from '$env/dynamic/private';
-import { serialize } from 'cookie'
 import {fail, redirect, type Actions } from "@sveltejs/kit";
-import { goto } from "$app/navigation";
 
 export const actions: Actions = {
   default: async ({ request, cookies }) => {
@@ -31,12 +29,12 @@ export const actions: Actions = {
     .get()
     
     if(!foundUser) {
-      return fail(409, { message: `${username} does not exist`})
+      return fail(400, { message: `Username does not exist or password is incorrect`})
     }
     try {
       const verifiedPassword = await argon2.verify(foundUser.password, password)
       if(!verifiedPassword) {
-        throw new Error("Incorrect Password")
+        throw new Error("Username or password incorrect")
       }
       
       const token = jwt.sign({ id: foundUser.id, username: foundUser.username}, privateKey, { algorithm: "HS256"})
